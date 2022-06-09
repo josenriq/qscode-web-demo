@@ -3,7 +3,11 @@ import { CodeDetector, FrequencyDetector } from './audio';
 
 @Component({
   selector: 'qs-root',
-  template: ` <button type="button" (click)="start()">Start</button> `,
+  template: `
+    <button type="button" class="btn btn-primary" (click)="start()">
+      Start
+    </button>
+  `,
 })
 export class AppComponent implements OnInit {
   constructor(
