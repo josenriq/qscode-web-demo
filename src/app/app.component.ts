@@ -4,10 +4,28 @@ import { CodeDetector, FrequencyDetector } from './audio';
 @Component({
   selector: 'qs-root',
   template: `
-    <button type="button" class="btn btn-primary" (click)="start()">
-      Start
-    </button>
+    <div class="centered">
+      <button
+        *ngIf="!isListening"
+        type="button"
+        class="btn btn-lg btn-primary"
+        (click)="start()"
+      >
+        Start
+      </button>
+      <qs-spinner *ngIf="isListening"></qs-spinner>
+    </div>
   `,
+  styles: [
+    `
+      .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    `,
+  ],
 })
 export class AppComponent implements OnInit {
   constructor(
@@ -19,6 +37,10 @@ export class AppComponent implements OnInit {
     this.codeDetector.onCodeDetected$.subscribe(code =>
       alert('New Code! ' + code),
     );
+  }
+
+  get isListening(): boolean {
+    return this.frequencyDetector.isListening;
   }
 
   start(): void {
