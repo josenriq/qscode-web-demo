@@ -40,14 +40,13 @@ export class CodeDetector {
     this.previousNote = note;
     this.currentCode += note;
 
-    if (/^C[ABDEFG]{4,}C$/.test(this.currentCode)) {
-      this.codeDetected$.next(this.currentCode);
-      this.currentCode = '';
-      return;
-    }
-
     if (note === 'C') {
-      this.currentCode = 'C';
+      if (/^C[ABDEFG]{4,}C$/.test(this.currentCode)) {
+        this.codeDetected$.next(this.currentCode);
+        this.currentCode = '';
+      } else {
+        this.currentCode = 'C';
+      }
     }
   }
 }

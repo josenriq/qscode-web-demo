@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -27,18 +28,22 @@ import {
   ],
 })
 export class PopupComponent {
-  isVisible = false;
+  private _isVisible = false;
+  get isVisible(): boolean {
+    return this._isVisible;
+  }
 
   show(): void {
-    this.isVisible = true;
+    this._isVisible = true;
   }
 
   hide(): void {
-    this.isVisible = false;
+    this._isVisible = false;
   }
 }
 
 @NgModule({
+  imports: [CommonModule],
   declarations: [PopupComponent],
   exports: [PopupComponent],
 })
