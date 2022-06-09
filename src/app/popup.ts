@@ -1,0 +1,45 @@
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  Output,
+} from '@angular/core';
+
+@Component({
+  selector: 'qs-popup',
+  template: `
+    <div class="wrapper" [class.in]="isVisible">
+      <ng-content></ng-content>
+    </div>
+  `,
+  styles: [
+    `
+      .wrapper {
+        transform: scale(0);
+        transition: transform 0.3s cubic-bezier(0.36, 0, 0.66, -0.56);
+        &.in {
+          transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transform: scale(1);
+        }
+      }
+    `,
+  ],
+})
+export class PopupComponent {
+  isVisible = false;
+
+  show(): void {
+    this.isVisible = true;
+  }
+
+  hide(): void {
+    this.isVisible = false;
+  }
+}
+
+@NgModule({
+  declarations: [PopupComponent],
+  exports: [PopupComponent],
+})
+export class PopupModule {}

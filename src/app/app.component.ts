@@ -1,20 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CodeDetector, FrequencyDetector } from './audio';
+import { PopupComponent } from './popup';
 
 @Component({
   selector: 'qs-root',
   template: `
-    <div class="centered">
-      <button
-        *ngIf="!isListening"
-        type="button"
-        class="btn btn-lg btn-primary"
-        (click)="start()"
-      >
-        Start
-      </button>
-      <qs-spinner *ngIf="isListening"></qs-spinner>
-    </div>
+    <button
+      *ngIf="!isListening"
+      type="button"
+      class="btn btn-lg btn-primary centered"
+      (click)="start()"
+    >
+      Start
+    </button>
+    <ng-container *ngIf="isListening">
+      <qs-spinner class="centered"></qs-spinner>
+      <qs-popup class="centered">
+        <qs-message-card (onDismiss)="popup?.hide()"></qs-message-card>
+      </qs-popup>
+    </ng-container>
   `,
   styles: [
     `
@@ -28,15 +32,20 @@ import { CodeDetector, FrequencyDetector } from './audio';
   ],
 })
 export class AppComponent implements OnInit {
+  @ViewChild(PopupComponent) popup?: PopupComponent;
+
   constructor(
     private readonly frequencyDetector: FrequencyDetector,
     private readonly codeDetector: CodeDetector,
   ) {}
 
   ngOnInit(): void {
-    this.codeDetector.onCodeDetected$.subscribe(code =>
-      alert('New Code! ' + code),
-    );
+    this.codeDetector.onCodeDetected$.subscribe(code => {
+      // alert('New Code! ' + code),
+      this.popup?.show();
+    });
+
+    setTimeout(() => this.popup?.show(), 3000);
   }
 
   get isListening(): boolean {
